@@ -37,7 +37,9 @@ func (w *Writer) RecordStart() (written int, err error) {
 func (w *Writer) WriteFields(fs ...Field) (written int, err error) {
 	var n int
 	for _, f := range fs {
-		n, err = w.w.WriteString(f.Name + ": " + strings.TrimLeft(f.Value, " ") + "\n")
+		n, err = w.w.WriteString(
+			f.Name + ": " + strings.TrimRight(strings.TrimLeft(f.Value, " "), "\\") + "\n",
+		)
 		written += n
 		if err != nil {
 			return
@@ -48,13 +50,15 @@ func (w *Writer) WriteFields(fs ...Field) (written int, err error) {
 
 func (w *Writer) WriteFieldMultiline(name string, lines []string) (written int, err error) {
 	var n int
-	n, err = w.w.WriteString(name + ": " + strings.TrimLeft(lines[0], " ") + "\n")
+	n, err = w.w.WriteString(
+		name + ": " + strings.TrimRight(strings.TrimLeft(lines[0], " "), "\\") + "\n",
+	)
 	written += n
 	if err != nil {
 		return
 	}
 	for _, l := range lines[1:] {
-		n, err = w.w.WriteString("+ " + l + "\n")
+		n, err = w.w.WriteString("+ " + strings.TrimRight(l, "\\") + "\n")
 		written += n
 		if err != nil {
 			return

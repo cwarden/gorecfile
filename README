@@ -7,4 +7,8 @@ an example usage.
 * ignore comments
 * support continuation lines (\$) and multilines (^+)
 
+Limitations:
+* leading spaces in the first line of the value are ignored
+* trailing backslash at the end of lines is cut
+
 It is free software: see the file COPYING for copying conditions.

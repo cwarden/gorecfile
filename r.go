@@ -80,7 +80,9 @@ func (r *Reader) Next() ([]Field, error) {
 		text = r.scanner.Text()
 
 		if continuation {
-			if text[len(text)-1] == '\\' {
+			if len(text) == 0 {
+				continuation = false
+			} else if text[len(text)-1] == '\\' {
 				lines = append(lines, text[:len(text)-1])
 			} else {
 				lines = append(lines, text)
