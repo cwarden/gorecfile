@@ -9,6 +9,6 @@ an example usage.
 
 Limitations:
 * leading spaces in the first line of the value are ignored
-* trailing backslash at the end of lines is cut
+* trailing backslash at the end of lines is followed by space
 
 It is free software: see the file COPYING for copying conditions.

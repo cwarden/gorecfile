@@ -26,19 +26,22 @@ type Writer struct {
 	w io.StringWriter
 }
 
-func NewWriter(w io.StringWriter) *Writer {
-	return &Writer{w}
-}
+func NewWriter(w io.StringWriter) *Writer { return &Writer{w} }
 
-func (w *Writer) RecordStart() (written int, err error) {
-	return w.w.WriteString("\n")
+func (w *Writer) RecordStart() (written int, err error) { return w.w.WriteString("\n") }
+
+func backslashSpace(s string) string {
+	if strings.HasSuffix(s, "\\") {
+		return s + " "
+	}
+	return s
 }
 
 func (w *Writer) WriteFields(fs ...Field) (written int, err error) {
 	var n int
 	for _, f := range fs {
 		n, err = w.w.WriteString(
-			f.Name + ": " + strings.TrimRight(strings.TrimLeft(f.Value, " "), "\\") + "\n",
+			f.Name + ": " + backslashSpace(strings.TrimLeft(f.Value, " ")) + "\n",
 		)
 		written += n
 		if err != nil {
@@ -51,14 +54,14 @@ func (w *Writer) WriteFields(fs ...Field) (written int, err error) {
 func (w *Writer) WriteFieldMultiline(name string, lines []string) (written int, err error) {
 	var n int
 	n, err = w.w.WriteString(
-		name + ": " + strings.TrimRight(strings.TrimLeft(lines[0], " "), "\\") + "\n",
+		name + ": " + backslashSpace(strings.TrimLeft(lines[0], " ")) + "\n",
 	)
 	written += n
 	if err != nil {
 		return
 	}
 	for _, l := range lines[1:] {
-		n, err = w.w.WriteString("+ " + strings.TrimRight(l, "\\") + "\n")
+		n, err = w.w.WriteString("+ " + backslashSpace(l) + "\n")
 		written += n
 		if err != nil {
 			return
