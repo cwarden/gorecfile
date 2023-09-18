@@ -1,3 +1,3 @@
 module go.cypherpunks.ru/recfile
 
-go 1.12
+go 1.21
