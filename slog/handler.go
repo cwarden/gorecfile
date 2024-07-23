@@ -23,7 +23,7 @@ import (
 	"sync"
 	"time"
 
-	"go.cypherpunks.ru/recfile"
+	"go.cypherpunks.su/recfile/v2"
 )
 
 type RecfileHandler struct {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"go.cypherpunks.ru/recfile"
+	"go.cypherpunks.su/recfile/v2"
 )
 
 func main() {
