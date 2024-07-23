@@ -17,6 +17,7 @@ package slog
 
 import (
 	"bytes"
+	"context"
 	"log/slog"
 	"testing"
 	"time"
@@ -33,7 +34,7 @@ func TestBasic(t *testing.T) {
 		"Message",
 		"Time",
 	))
-	if !logger.Enabled(nil, slog.LevelWarn) {
+	if !logger.Enabled(context.TODO(), slog.LevelWarn) {
 		t.FailNow()
 	}
 	logger.Info("won't catch me")
