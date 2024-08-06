@@ -69,7 +69,7 @@ func (r *Reader) Next() ([]Field, error) {
 	var err error
 	for {
 		if !r.scanner.Scan() {
-			if err := r.scanner.Err(); err != nil {
+			if err = r.scanner.Err(); err != nil {
 				return fields, err
 			}
 			err = io.EOF

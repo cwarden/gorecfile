@@ -28,13 +28,13 @@ import (
 
 type RecfileHandler struct {
 	W        io.Writer
-	Level    slog.Level
 	LevelKey string
 	MsgKey   string
 	TimeKey  string
-	attrs    []slog.Attr
 	group    string
 	m        *sync.Mutex
+	attrs    []slog.Attr
+	Level    slog.Level
 }
 
 func NewRecfileHandler(
