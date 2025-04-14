@@ -77,6 +77,15 @@ func (r *Reader) Next() ([]Field, error) {
 		}
 		text = r.scanner.Text()
 
+		if len(text) > 0 && text[0] == '#' {
+			continue
+		}
+
+		// 👉 Skip record descriptors like %rec:, %key:, etc.
+		if len(text) > 0 && text[0] == '%' {
+			continue
+		}
+
 		if continuation {
 			if len(text) == 0 {
 				continuation = false
@@ -88,10 +97,6 @@ func (r *Reader) Next() ([]Field, error) {
 				lines = make([]string, 0)
 				continuation = false
 			}
-			continue
-		}
-
-		if len(text) > 0 && text[0] == '#' {
 			continue
 		}
 
