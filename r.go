@@ -23,13 +23,16 @@ import (
 )
 
 type Reader struct {
-	scanner *bufio.Scanner
+	scanner     *bufio.Scanner
+	lastRecType string
 }
 
 // Create Reader for iterating through the records. It uses
 // bufio.Scanner, so can read more than currently parsed records take.
 func NewReader(r io.Reader) *Reader {
-	return &Reader{bufio.NewScanner(r)}
+	return &Reader{
+		scanner: bufio.NewScanner(r),
+	}
 }
 
 func getKeyValue(text string) (string, string) {
@@ -81,7 +84,13 @@ func (r *Reader) Next() ([]Field, error) {
 			continue
 		}
 
-		// 👉 Skip record descriptors like %rec:, %key:, etc.
+		// Handle record type
+		if strings.HasPrefix(text, "%rec:") {
+			r.lastRecType = strings.TrimSpace(strings.TrimPrefix(text, "%rec:"))
+			continue
+		}
+
+		// Skip other metadata lines (e.g., %key:)
 		if len(text) > 0 && text[0] == '%' {
 			continue
 		}
@@ -145,6 +154,12 @@ func (r *Reader) Next() ([]Field, error) {
 		}
 		return fields, err
 	}
+
+	// Inject %rec field
+	if r.lastRecType != "" {
+		fields = append([]Field{{Name: "%rec", Value: r.lastRecType}}, fields...)
+	}
+
 	return fields, nil
 }
 
